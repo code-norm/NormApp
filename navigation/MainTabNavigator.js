@@ -1,5 +1,4 @@
 import React from "react";
-import { Platform } from "react-native";
 import {
   createStackNavigator,
   createBottomTabNavigator
@@ -37,8 +36,15 @@ const GameStack = createStackNavigator({
 });
 GameStack.navigationOptions = {
   tabBarLabel: "Game",
+  headerStyle: {
+    backgroundColor: "#f4511e"
+  },
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontWeight: "bold"
+  },
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={"logo-game-controller-b"} />
+    <TabBarIcon focused={focused} name="logo-game-controller-b" />
   )
 };
 
@@ -47,12 +53,9 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
+  tabBarLabel: "Chat",
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
+    <TabBarIcon focused={focused} name="logo-snapchat" />
   )
 };
 
