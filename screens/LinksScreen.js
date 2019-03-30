@@ -1,6 +1,8 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-
+import { Button } from "react-native-elements";
+import ChatNavigation from "../navigation/ChatNavigation";
+import MessengerList from "../Chat/MessengerList";
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
     title: "Chat"
@@ -9,8 +11,7 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-         * content, we just wanted to provide you with some helpful links */}
+        <MessengerList navigation={this.props.navigation} />
       </ScrollView>
     );
   }

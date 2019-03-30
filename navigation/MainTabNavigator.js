@@ -10,6 +10,7 @@ import LinksScreen from "../screens/LinksScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import GameScreen from "../screens/GameScreen";
 import PeopleScreen from "../screens/PeopleScreen";
+import MessageScreen from "../screens/MessageScreen";
 
 const PeopleStack = createStackNavigator({
   People: PeopleScreen
@@ -34,6 +35,7 @@ HomeStack.navigationOptions = {
 const GameStack = createStackNavigator({
   Game: GameScreen
 });
+
 GameStack.navigationOptions = {
   tabBarLabel: "Game",
   headerStyle: {
@@ -49,7 +51,8 @@ GameStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen
+  Chat: LinksScreen,
+  Message: MessageScreen
 });
 
 LinksStack.navigationOptions = {
