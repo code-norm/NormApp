@@ -119,7 +119,11 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <ThemeProvider>
-            <Button title="My Symptoms" />
+            <View>
+                <Button buttonStyle={styles.left} title="My Symptoms" />
+                <Button buttonStyle={styles.right} title="Notifications" />
+                    <Button title=" " />
+            </View>
           </ThemeProvider>
 
           {this.state.selectedSymptoms.map((symptom, index) => {
@@ -131,7 +135,7 @@ export default class HomeScreen extends React.Component {
                     onPress={() => this._handleToggle(symptom.name)} />
 
                 <Switch
-                  style={styles.switch}
+                  style={[styles.switch, styles.right]}
                   onValueChange={() => this._handleNotificationToggle(symptom.name)}
                   value={symptom.notifications}
                 />
@@ -234,8 +238,23 @@ const styles = StyleSheet.create({
   },
   switch: {
     position: 'absolute',
+    bottom: '25%'
+  },
+  head: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+  },
+  left: {
+    zIndex: 2,
+    position: 'absolute',
+    left: 15
+  },
+  right: {
+    zIndex: 2,
     alignSelf: 'flex-end',
-    bottom: '25%',
-    right: 10
-  }
+    position: 'absolute',
+    right: 15
+  },
 });
