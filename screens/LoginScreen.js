@@ -111,13 +111,6 @@ export default class LoginScreen extends React.Component {
         >
           <Text>Register</Text>
         </TouchableHighlight>
-
-        <TouchableHighlight
-          style={(styles.buttonContainer, styles.skip)}
-          onPress={() => this.onClickListener("skip")}
-        >
-          <Text>Skip</Text>
-        </TouchableHighlight>
       </View>
     );
   }

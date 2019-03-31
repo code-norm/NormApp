@@ -13,10 +13,10 @@ const AppStack = createStackNavigator(
   { Main: MainTabNavigator },
   { headerMode: "none" }
 );
-const AuthStack = createStackNavigator(
-  { Login: LoginScreen },
-  { headerMode: "none" }
-);
+const AuthStack = createStackNavigator({
+  Login: LoginScreen,
+  Register: RegisterScreen
+});
 
 export default createAppContainer(
   createSwitchNavigator(

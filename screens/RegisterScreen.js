@@ -19,25 +19,28 @@ export default class RegisterScreen extends React.Component {
   state = {
     email: "",
     password: "",
-    name: "haha"
+    username: "",
+    confirm: ""
   };
 
   onClickListener = viewId => {
     if (viewId == "skip") this.props.navigation.navigate("App");
     else Alert.alert("Alert", "Button pressed " + viewId);
   };
-  onLogin() {
+  onRegister() {
     axios
-      .get("https://codenorm.herokuapp.com/", {
+      .get("https://codenorm.herokuapp.com/signup", {
         params: {
           email: this.state.email,
-          password: this.state.password
+          password: this.state.password,
+          username: this.state.username,
+          confirm: this.state.confirm
         }
       })
       .then(response => {
-        if (response.data.Username) {
+        if (response.data.Uname) {
           this.props.navigation.navigate("Home", {
-            username: response.data.Username
+            username: response.data.Uname
           });
         }
       })
@@ -55,6 +58,23 @@ export default class RegisterScreen extends React.Component {
               uri: "https://png.icons8.com/message/ultraviolet/50/3498db"
             }}
           />
+
+          <TextInput
+            style={styles.inputs}
+            placeholder="Username"
+            underlineColorAndroid="transparent"
+            onChangeText={username => this.setState({ username })}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Image
+            style={styles.inputIcon}
+            source={{
+              uri: "https://png.icons8.com/message/ultraviolet/50/3498db"
+            }}
+          />
+
           <TextInput
             style={styles.inputs}
             placeholder="Email"
@@ -80,32 +100,26 @@ export default class RegisterScreen extends React.Component {
           />
         </View>
 
+        <View style={styles.inputContainer}>
+          <Image
+            style={styles.inputIcon}
+            source={{
+              uri: "https://png.icons8.com/key-2/ultraviolet/50/3498db"
+            }}
+          />
+          <TextInput
+            style={styles.inputs}
+            placeholder="Confirm"
+            secureTextEntry={true}
+            underlineColorAndroid="transparent"
+            onChangeText={confirm => this.setState({ confirm })}
+          />
+        </View>
         <TouchableHighlight
           style={[styles.buttonContainer, styles.loginButton]}
-          onPress={() => this.onLogin()}
+          onPress={() => this.onRegister()}
         >
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={styles.buttonContainer}
-          onPress={() => this.onClickListener("restore_password")}
-        >
-          <Text>Forgot your password?</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={styles.buttonContainer}
-          onPress={() => this.onClickListener("register")}
-        >
-          <Text>Register</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={(styles.buttonContainer, styles.skip)}
-          onPress={() => this.onClickListener("skip")}
-        >
-          <Text>Skip</Text>
+          <Text style={styles.loginText}>Register</Text>
         </TouchableHighlight>
       </View>
     );
