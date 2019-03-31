@@ -34,6 +34,27 @@ Notifications.createCategoryAsync('rate', [
     console.log(`Category 'rate' not created!`);
   });
 
+
+Notifications.createCategoryAsync('reminder', [
+  {
+    actionId: 'taken',
+    buttonTitle: 'Taken',
+    isDestructive: false,
+    isAuthenticationRequired: false,
+  },
+  {
+    actionId: 'later',
+    buttonTitle: 'Later',
+    isDestructive: false,
+    isAuthenticationRequired: false,
+  }
+]).then(() => {
+    console.log(`Category 'reminder' created!`);
+  })
+  .catch(() => {
+    console.log(`Category 'reminder' not created!`);
+  });
+
 export default class NotificationSceen extends React.Component {
   constructor(props) {
     super(props);
@@ -84,8 +105,16 @@ export default class NotificationSceen extends React.Component {
   render() {
     return (
       <View style={{ paddingTop: 50 }}>
-        <View style={[style.card, { flexDirection: 'row' }]}>
+        <View style={style.card}>
+          <Text style={style.label}>Device ID</Text>
+          <TextInput style={style.input}>{this.state.token}</TextInput>
+        </View>
+        <View style={[style.card, { flexDirection: "row" }]}>
           <Button onPress={this.delayNotify} title="Notification Example" />
+        </View>
+        <View style={style.card}>
+          <Text style={style.label}>Device ID</Text>
+          <TextInput style={style.input}>{this.state.token}</TextInput>
         </View>
       </View>
     );
@@ -101,6 +130,22 @@ export default class NotificationSceen extends React.Component {
         body: 'Feeling more tired than last time?',
         experienceId: '@dnguyen1289/code-norm',
         _category: '@dnguyen1289/code-norm:rate',
+        _contentAvailable: true,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    });
+    fetch('https://exp.host/--/api/v2/push/send', {
+      body: JSON.stringify({
+        to: token,
+        badge: 0,
+        title: 'Medicine Reminder!',
+        body: '',
+        experienceId: '@dnguyen1289/code-norm',
+        _category: '@dnguyen1289/code-norm:reminder',
         _contentAvailable: true,
       }),
       headers: {
