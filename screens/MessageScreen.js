@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Input, Button } from "react-native-elements";
+import { Input, Button, CheckBox } from "react-native-elements";
 import Chatkit from "@pusher/chatkit-client";
 
 import OldMessages from "../Chat/OldMessages";
@@ -20,35 +20,53 @@ export default class MessageScreen extends React.Component {
   state = {
     text: "",
     currentUser: {},
-    messages: []
+    messages: [],
+    typingUser: ""
   };
 
   sendMessage = () => {
-    const { currentUser, text } = this.state;
-    currentUser
-      .sendSimpleMessage({
-        roomId: currentUser.rooms[0].id,
-        text: text
-      })
-      .then(messageId => {
-        this.setState({ text: "" });
-        console.log(`Added message to ${currentUser.rooms[0].name}`);
-      })
-      .catch(err => {
-        console.log(
-          `Error adding message to ${currentUser.rooms[0].name}: ${err}`
-        );
-      });
+    if (this.state.text !== "") {
+      const { currentUser, text } = this.state;
+      currentUser
+        .sendSimpleMessage({
+          roomId: "19580450",
+          text: text
+        })
+        .then(messageId => {
+          if (this.state.messages.length > 5) {
+            this.state.messages.shift();
+          }
+          this.setState({ text: "", message: this.state.messages });
+        })
+        .catch(err => {
+          console.log(
+            `Error adding message to ${currentUser.rooms[0].name}: ${err}`
+          );
+        });
+    }
   };
 
+  onChangeText() {
+    this.state.currentUser.isTypingIn({ roomId: "19580450" }).catch(err => {
+      console.log(`Error sending typing indicator: ${err}`);
+    });
+  }
   render() {
     return (
       <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
         <View style={styles.container}>
-          <OldMessages messages={this.state.messages} />
+          <OldMessages
+            messages={
+              this.state.messages.length <= 5 ? this.state.messages : []
+            }
+          />
+          <Text>{this.state.typingUser}</Text>
           <Input
             placeholder="      Send text"
-            onChangeText={text => this.setState({ text: text })}
+            onChangeText={text => {
+              this.onChangeText.bind(this);
+              this.setState({ text: text });
+            }}
             leftIcon={<Icon name="user" size={24} color="black" />}
             value={this.state.text}
           />
@@ -77,22 +95,36 @@ export default class MessageScreen extends React.Component {
     chatManager
       .connect()
       .then(currentUser => {
-        currentUser
-          .subscribeToRoomMultipart({
-            roomId: "19575646",
-            hooks: {
-              onMessage: message => {
-                this.state.messages.push({
-                  sender: message.senderId,
-                  text: message.parts[0].payload.content
+        this.setState({ currentUser: currentUser });
+
+        currentUser.subscribeToRoomMultipart({
+          roomId: "19580450",
+          hooks: {
+            onMessage: message => {
+              if (message) {
+                this.setState({
+                  messages: [
+                    ...this.state.messages,
+                    {
+                      sender: message.senderId,
+                      text: message.parts[0].payload.content
+                    }
+                  ]
                 });
               }
             },
-            messageLimit: 10
-          })
-          .then(currentRoom => {
-            this.setState({ currentUser: currentUser });
-          });
+            onUserStartedTyping: user => {
+              console.log("It is typing");
+            },
+            onUserStoppedTyping: user => {
+              // do something with the user
+            },
+            onPresenceChanged: (state, user) => {
+              console.log(`User ${user.name} is ${state.current}`);
+            }
+          },
+          messageLimit: 5
+        });
       })
       .catch(err => {
         console.log("Error on connection", err);

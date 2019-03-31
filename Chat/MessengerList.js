@@ -41,6 +41,7 @@ export default class MessengerList extends React.Component {
       <View>
         {this.state.list.map((l, i) => (
           <TouchableOpacity
+            key={i}
             onPress={() =>
               this.props.navigation.push("Message", {
                 name: l.name,
@@ -49,7 +50,6 @@ export default class MessengerList extends React.Component {
             }
           >
             <ListItem
-              key={i}
               leftAvatar={{ source: { uri: l.avatar_url } }}
               title={l.name}
               subtitle={l.subtitle}

@@ -9,7 +9,9 @@ export default class OldMessages extends React.Component {
     return (
       <View>
         {this.props.messages.map((m, i) => (
-          <ListItem key={i} title={m.sender} subtitle={m.text} />
+          <View key={i}>
+            <ListItem title={m.sender} subtitle={m.text} />
+          </View>
         ))}
       </View>
     );
