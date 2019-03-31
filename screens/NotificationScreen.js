@@ -84,18 +84,7 @@ export default class NotificationSceen extends React.Component {
   render() {
     return (
       <View style={{ paddingTop: 50 }}>
-        // <View style={style.card}>
-        //   <Text style={style.label}>Device ID</Text>
-        //   <TextInput style={style.input}>{this.state.token}</TextInput>
-        // </View>
-        // <View style={style.card}>
-        //   <Text style={style.label}>Notification Payload</Text>
-        //   <TextInput multiline={true} style={[style.input, { height: 100 }]}>
-        //     {this.state.notificationBody}
-        //   </TextInput>
-        // </View>
         <View style={[style.card, { flexDirection: 'row' }]}>
-          // <Button onPress={this.notify} title="Notify" />
           <Button onPress={this.delayNotify} title="Notification Example" />
         </View>
       </View>
