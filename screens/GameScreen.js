@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import CarouselGame from "../Game/CarouselGame";
-import QuizGame from "../Game/QuizGame";
 
 export default class LinksScreen extends React.Component {
   static navigationOptions = {

@@ -48,13 +48,6 @@ export default class GameDiff extends Component {
                     this.props.onDifficulty("m");
                   }}
                 />
-                <Button
-                  style={{ marginBottom: 10 }}
-                  title="Hard"
-                  onPress={() => {
-                    this.props.onDifficulty("h");
-                  }}
-                />
               </Body>
             </CardItem>
             <CardItem footer />

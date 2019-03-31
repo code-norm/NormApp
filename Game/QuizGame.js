@@ -27,9 +27,6 @@ export default class QuizGame extends Component {
     } else if (d === "m") {
       api =
         "https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=boolean";
-    } else if (d === "h") {
-      api =
-        "https://opentdb.com/api.php?amount=10&category=9&difficulty=hard&type=boolean";
     }
     axios.get(api).then(response => {
       this.setState({ questions: response.data.results });
