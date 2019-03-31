@@ -11,23 +11,29 @@ import {
 import { ImagePicker, Permissions } from "expo";
 import { ScrollView } from "react-native-gesture-handler";
 import { Input, Icon } from "react-native-elements";
-import OldPost from "./OldPost";
+import Food from "./Food";
 export default class Post extends React.Component {
   state = {
     image: null,
     hasCameraPermission: false,
     journals: [],
-    content: ""
+    content: "",
+    selected: 0
   };
 
-  onSubmit() {
+  onSubmit(emoji) {
+    let color = "";
+    if (emoji === 0) color = "lightgreen";
+    if (emoji === 1) color = "lightgrey";
+    if (emoji === 2) color = "tomato";
     this.setState({
       journals: [
         ...this.state.journals,
         {
           content: this.state.content,
           date: new Date().toLocaleString(),
-          image: this.state.image
+          image: this.state.image,
+          color: color
         }
       ],
       image: null,
@@ -42,15 +48,12 @@ export default class Post extends React.Component {
       <View>
         <View style={styles.card}>
           <Text style={styles.label}>
-            {"📕📓" + " " + new Date().toLocaleString()}
+            {"🥞🍔" + " " + new Date().toLocaleString()}
           </Text>
 
           <TextInput
             style={styles.input}
-            multiline={true}
-            editable={true}
-            maxLength={5000}
-            placeholder="Anything different or special today?"
+            placeholder="What do you eat today?"
             onChangeText={value => {
               this.setState({ content: value });
             }}
@@ -62,23 +65,41 @@ export default class Post extends React.Component {
             <TouchableOpacity
               title="Submit"
               onPress={() => {
-                this.onSubmit();
+                this.onSubmit(0);
               }}
+              style={styles.rating}
             >
-              <Icon
-                reverse
-                name="ios-cloud-upload"
-                type="ionicon"
-                color="#517fa4"
-              />
+              <Text style={{ fontSize: 30 }}>😊</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              title="Submit"
+              onPress={() => {
+                this.onSubmit(1);
+              }}
+              style={styles.rating}
+            >
+              <Text style={{ fontSize: 30 }}>😐</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              title="Submit"
+              onPress={() => {
+                this.onSubmit(2);
+              }}
+              style={styles.rating}
+            >
+              <Text style={{ fontSize: 30 }}>😟</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity
               title="Camera roll"
               onPress={() => {
                 if (this.state.hasCameraPermission) this._pickImage();
               }}
+              style={styles.rating}
             >
-              <Icon reverse name="ios-images" type="ionicon" color="#517fa4" />
+              <Text style={{ fontSize: 30 }}>🖼️</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.container}>
@@ -92,11 +113,12 @@ export default class Post extends React.Component {
           <View style={styles.container}>
             {this.state.journals.map((j, i) => {
               return (
-                <OldPost
+                <Food
                   key={i}
                   image={j.image}
                   content={j.content}
                   date={j.date}
+                  color={j.color}
                 />
               );
             })}
@@ -150,5 +172,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 15,
     alignSelf: "center"
+  },
+  rating: {
+    marginLeft: 10
   }
 });

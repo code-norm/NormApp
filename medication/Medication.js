@@ -11,8 +11,8 @@ import {
 import { ImagePicker, Permissions } from "expo";
 import { ScrollView } from "react-native-gesture-handler";
 import { Input, Icon } from "react-native-elements";
-import OldPost from "./OldPost";
-export default class Post extends React.Component {
+import OldPost from "../journal/OldPost";
+export default class Medication extends React.Component {
   state = {
     image: null,
     hasCameraPermission: false,
@@ -42,7 +42,7 @@ export default class Post extends React.Component {
       <View>
         <View style={styles.card}>
           <Text style={styles.label}>
-            {"📕📓" + " " + new Date().toLocaleString()}
+            {"🏥⚕️" + " " + new Date().toLocaleString()}
           </Text>
 
           <TextInput
@@ -50,7 +50,7 @@ export default class Post extends React.Component {
             multiline={true}
             editable={true}
             maxLength={5000}
-            placeholder="Anything different or special today?"
+            placeholder="Description about your medication report"
             onChangeText={value => {
               this.setState({ content: value });
             }}
