@@ -2,25 +2,19 @@ import * as React from 'react';
 import { TextInput, View, Text, Button } from 'react-native';
 import { Notifications, Permissions, Constants } from 'expo';
 
-Notifications.createCategoryAsync('welcome', [
+Notifications.createCategoryAsync('bool', [
   {
-    actionId: 'one',
-    buttonTitle: 'Button One',
-    isDestructive: true,
-    isAuthenticationRequired: false,
-  },
-  {
-    actionId: 'two',
-    buttonTitle: 'Button Two',
+    actionId: 'yes',
+    buttonTitle: 'Yes',
     isDestructive: false,
-    isAuthenticationRequired: true,
-  },
-  {
-    actionId: 'three',
-    buttonTitle: 'Three',
-    textInput: { submitButtonTitle: 'Three', placeholder: 'Type Something' },
     isAuthenticationRequired: false,
   },
+  {
+    actionId: 'no',
+    buttonTitle: 'No',
+    isDestructive: false,
+    isAuthenticationRequired: false,
+  }
 ])
   .then(() => {
     console.log(`Category 'welcome' created!`);
@@ -34,6 +28,25 @@ export default class NotificationSceen extends React.Component {
     super(props);
     this.state = { token: null, notificationBody: null };
   }
+
+    async registerForPushNotifications() {
+      const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+      if (status !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        if (status !== 'granted') {
+          return;
+        }
+      }
+
+      const token = await Notifications.getExpoPushTokenAsync();
+
+      this.subscription = Notifications.addListener(this.handleNotification);
+
+      this.setState({
+        token,
+      });
+    }
 
   componentDidMount() {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(obj => {
@@ -83,12 +96,14 @@ export default class NotificationSceen extends React.Component {
     fetch('https://exp.host/--/api/v2/push/send', {
       body: JSON.stringify({
         to: token,
-        title: 'Test Title',
-        body: 'Test Body',
-        data: { random: Math.random() },
-        _category: `${Constants.manifest.id}:welcome`,
+        title: 'Fatigue Check',
+        body: 'Feeling more tired than last time?',
+        experienceId: '@dnguyen1289/code-norm',
+        _category: '@dnguyen1289/code-norm:bool',
+        _contentAvailable: true,
       }),
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'POST',
