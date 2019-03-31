@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   View,
   Switch,
-  Dimensions
+  Dimensions,
+  AsyncStorage
 } from "react-native";
 import { WebBrowser } from "expo";
 
@@ -24,11 +25,22 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
-
+  _retrieveData = async () => {
+    try {
+      const username = await AsyncStorage.getItem("username");
+      if (username !== null) {
+        // We have data!!
+        this.setState({ username });
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
   constructor(props) {
     super(props);
 
     this.state = {
+      username: "",
       selectedSymptoms: [
         {
           name: "Fatigue",
@@ -108,7 +120,20 @@ export default class HomeScreen extends React.Component {
     symptom.notifications = !symptom.notifications;
     this.setState({ selectedSymptoms: this.state.selectedSymptoms });
   }
+  componentDidMount() {
+    this._storeData();
+  }
 
+  _storeData = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "username",
+        this.props.navigation.getParam("username", "j")
+      );
+    } catch (error) {
+      // Error saving data
+    }
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -117,6 +142,9 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
+            <Text style={{ fontSize: 30 }}>
+              Welcome {this.props.navigation.getParam("username", "a")}
+            </Text>
             <Image
               source={
                 __DEV__

@@ -25,18 +25,16 @@ export default class MessageScreen extends React.Component {
   };
 
   sendMessage = () => {
+    const roomId = this.props.navigation.state.params.roomId;
     if (this.state.text !== "") {
       const { currentUser, text } = this.state;
       currentUser
         .sendSimpleMessage({
-          roomId: "19580450",
+          roomId: roomId,
           text: text
         })
         .then(messageId => {
-          if (this.state.messages.length > 4) {
-            this.state.messages.shift();
-          }
-          this.setState({ text: "", message: this.state.messages });
+          this.setState({ text: "" });
         })
         .catch(err => {
           console.log(
@@ -47,7 +45,8 @@ export default class MessageScreen extends React.Component {
   };
 
   onChangeText() {
-    this.state.currentUser.isTypingIn({ roomId: "19580450" }).catch(err => {
+    const roomId = this.props.navigation.state.params.roomId;
+    this.state.currentUser.isTypingIn({ roomId: roomId }).catch(err => {
       console.log(`Error sending typing indicator: ${err}`);
     });
   }
@@ -55,12 +54,14 @@ export default class MessageScreen extends React.Component {
     return (
       <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
         <View style={styles.container}>
-          <OldMessages
-            messages={
-              this.state.messages.length <= 4 ? this.state.messages : []
-            }
-          />
-          <Text>{this.state.typingUser}</Text>
+          <ScrollView style={{ height: 400 }}>
+            <OldMessages
+              messages={this.state.messages}
+              currentUsername={
+                this.props.navigation.state.params.currentUsername
+              }
+            />
+          </ScrollView>
           <Input
             placeholder="      Send text"
             onChangeText={text => {
@@ -69,12 +70,13 @@ export default class MessageScreen extends React.Component {
             }}
             leftIcon={<Icon name="user" size={24} color="black" />}
             value={this.state.text}
+            style={{ height: 30 }}
           />
           <Button
             onPress={() => {
               this.sendMessage();
             }}
-            icon={<Icon name="arrow-right" size={15} color="white" />}
+            icon={<Icon name="send" size={15} color="white" />}
           />
         </View>
       </KeyboardAvoidingView>
@@ -88,7 +90,7 @@ export default class MessageScreen extends React.Component {
 
     const chatManager = new Chatkit.ChatManager({
       instanceLocator: "v1:us1:bb7c51cf-f5cf-4761-a4ce-622a50e099cb",
-      userId: "duy",
+      userId: this.props.navigation.state.params.currentUsername,
       tokenProvider
     });
 
@@ -96,9 +98,8 @@ export default class MessageScreen extends React.Component {
       .connect()
       .then(currentUser => {
         this.setState({ currentUser: currentUser });
-
         currentUser.subscribeToRoomMultipart({
-          roomId: "19580450",
+          roomId: this.props.navigation.state.params.roomId,
           hooks: {
             onMessage: message => {
               if (message) {
@@ -116,14 +117,11 @@ export default class MessageScreen extends React.Component {
             onUserStartedTyping: user => {
               console.log("It is typing");
             },
-            onUserStoppedTyping: user => {
-              // do something with the user
-            },
             onPresenceChanged: (state, user) => {
               console.log(`User ${user.name} is ${state.current}`);
             }
           },
-          messageLimit: 4
+          messageLimit: 10
         });
       })
       .catch(err => {
