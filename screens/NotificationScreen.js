@@ -1,26 +1,37 @@
-import * as React from "react";
-import { TextInput, View, Text, Button } from "react-native";
-import { Notifications, Permissions, Constants } from "expo";
+import * as React from 'react';
+import { TextInput, View, Text, Button } from 'react-native';
+import { Notifications, Permissions, Constants } from 'expo';
 
-Notifications.createCategoryAsync('bool', [
+Notifications.createCategoryAsync('rate', [
   {
-    actionId: 'yes',
-    buttonTitle: 'Yes',
+    actionId: '1',
+    buttonTitle: '1-3 😖',
     isDestructive: false,
     isAuthenticationRequired: false,
   },
   {
-    actionId: 'no',
-    buttonTitle: 'No',
+    actionId: '2',
+    buttonTitle: '4-6 😟',
+    isDestructive: false,
+    isAuthenticationRequired: false,
+  },
+  {
+    actionId: '3',
+    buttonTitle: '7-9 🙂',
+    isDestructive: false,
+    isAuthenticationRequired: false,
+  },
+  {
+    actionId: '4',
+    buttonTitle: '10 😁',
     isDestructive: false,
     isAuthenticationRequired: false,
   }
-])
-  .then(() => {
-    console.log(`Category 'welcome' created!`);
+]).then(() => {
+    console.log(`Category 'rate' created!`);
   })
   .catch(() => {
-    console.log(`Category 'welcome' not created!`);
+    console.log(`Category 'rate' not created!`);
   });
 
 export default class NotificationSceen extends React.Component {
@@ -50,9 +61,9 @@ export default class NotificationSceen extends React.Component {
 
   componentDidMount() {
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(obj => {
-      if (obj.status !== "granted") {
+      if (obj.status !== 'granted') {
         Permissions.askAsync(Permissions.NOTIFICATIONS).then(obj => {
-          if (obj.status !== "granted") {
+          if (obj.status !== 'granted') {
             return;
           }
           Notifications.getExpoPushTokenAsync().then(token => {
@@ -73,19 +84,19 @@ export default class NotificationSceen extends React.Component {
   render() {
     return (
       <View style={{ paddingTop: 50 }}>
-        <View style={style.card}>
-          <Text style={style.label}>Device ID</Text>
-          <TextInput style={style.input}>{this.state.token}</TextInput>
-        </View>
-        <View style={style.card}>
-          <Text style={style.label}>Notification Payload</Text>
-          <TextInput multiline={true} style={[style.input, { height: 100 }]}>
-            {this.state.notificationBody}
-          </TextInput>
-        </View>
-        <View style={[style.card, { flexDirection: "row" }]}>
-          <Button onPress={this.notify} title="Notify" />
-          <Button onPress={this.delayNotify} title="Delayed Notify" />
+        // <View style={style.card}>
+        //   <Text style={style.label}>Device ID</Text>
+        //   <TextInput style={style.input}>{this.state.token}</TextInput>
+        // </View>
+        // <View style={style.card}>
+        //   <Text style={style.label}>Notification Payload</Text>
+        //   <TextInput multiline={true} style={[style.input, { height: 100 }]}>
+        //     {this.state.notificationBody}
+        //   </TextInput>
+        // </View>
+        <View style={[style.card, { flexDirection: 'row' }]}>
+          // <Button onPress={this.notify} title="Notify" />
+          <Button onPress={this.delayNotify} title="Notification Example" />
         </View>
       </View>
     );
@@ -93,20 +104,21 @@ export default class NotificationSceen extends React.Component {
 
   notify = () => {
     const { token } = this.state;
-    fetch("https://exp.host/--/api/v2/push/send", {
+    fetch('https://exp.host/--/api/v2/push/send', {
       body: JSON.stringify({
         to: token,
+        badge: 0,
         title: 'Fatigue Check',
         body: 'Feeling more tired than last time?',
         experienceId: '@dnguyen1289/code-norm',
-        _category: '@dnguyen1289/code-norm:bool',
+        _category: '@dnguyen1289/code-norm:rate',
         _contentAvailable: true,
       }),
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      method: "POST"
+      method: 'POST',
     });
   };
 
@@ -125,22 +137,22 @@ const style = {
   card: {
     padding: 15,
     margin: 15,
-    shadowColor: "rgb(0,0,0)",
+    shadowColor: 'rgb(0,0,0)',
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
-    backgroundColor: "white",
-    borderRadius: 5
+    backgroundColor: 'white',
+    borderRadius: 5,
   },
   input: {
-    borderColor: "#eee",
+    borderColor: '#eee',
     borderWidth: 1,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   label: {
-    fontWeight: "600",
+    fontWeight: '600',
     fontSize: 16,
-    marginBottom: 10
-  }
+    marginBottom: 10,
+  },
 };
