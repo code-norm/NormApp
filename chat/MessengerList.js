@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem } from "react-native-elements";
-import { View, Button, TouchableOpacity } from "react-native";
+import { View, Button, TouchableOpacity, Text } from "react-native";
 export default class MessengerList extends React.Component {
   constructor(props) {
     super(props);
@@ -13,21 +13,16 @@ export default class MessengerList extends React.Component {
         username: "john",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-        subtitle: "Vice President"
-      },
-      {
-        name: "Amy Vo",
-        avatar_url:
-          "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-        username: "amy",
-        subtitle: "Vice Chairman"
+        subtitle: "Vice President",
+        roomId: "19585432"
       },
       {
         name: "Duy Nguyen",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
         username: "duy",
-        subtitle: "Vice Chairman"
+        subtitle: "Vice Chairman",
+        roomId: "19585430"
       }
     ]
   };
@@ -36,16 +31,18 @@ export default class MessengerList extends React.Component {
     this.props.navigation.navigate("Game");
   };
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View>
+        <Text>{this.props.username}</Text>
         {this.state.list.map((l, i) => (
           <TouchableOpacity
             key={i}
             onPress={() =>
               this.props.navigation.push("Message", {
                 name: l.name,
-                username: l.username
+                username: l.username,
+                roomId: l.roomId,
+                currentUsername: this.props.username
               })
             }
           >

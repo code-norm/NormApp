@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  AsyncStorage,
   Button,
   View,
   StyleSheet,
@@ -10,7 +9,9 @@ import {
   Image,
   Alert
 } from "react-native";
+import { AsyncStorage } from "react-native";
 import axios from "axios";
+
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +23,13 @@ export default class LoginScreen extends React.Component {
     name: "haha"
   };
 
+  _storeData = async username => {
+    try {
+      await AsyncStorage.setItem("username", username);
+    } catch (error) {
+      // Error saving data
+    }
+  };
   onClickListener = viewId => {
     if (viewId == "skip") this.props.navigation.navigate("App");
     else Alert.alert("Alert", "Button pressed " + viewId);
@@ -36,7 +44,9 @@ export default class LoginScreen extends React.Component {
       })
       .then(response => {
         if (response.data.Username) {
-          this.props.navigation.navigate("App");
+          this.props.navigation.navigate("Home", {
+            username: response.data.Username
+          });
         }
       })
       .catch(function(error) {

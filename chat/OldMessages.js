@@ -10,7 +10,18 @@ export default class OldMessages extends React.Component {
       <View>
         {this.props.messages.map((m, i) => (
           <View key={i}>
-            <ListItem title={m.sender} subtitle={m.text} />
+            <ListItem
+              containerStyle={{
+                backgroundColor:
+                  m.sender === this.props.currentUsername
+                    ? "lightblue"
+                    : "white"
+              }}
+              titleStyle={{ fontSize: 30 }}
+              subtitleStyle={{ fontSize: 20 }}
+              title={m.sender}
+              subtitle={m.text}
+            />
           </View>
         ))}
       </View>
