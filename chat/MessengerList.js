@@ -21,7 +21,7 @@ export default class MessengerList extends React.Component {
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
         username: "duy",
-        subtitle: "Vice Chairman",
+        subtitle: "Student",
         roomId: "19585430"
       }
     ]

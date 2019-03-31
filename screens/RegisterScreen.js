@@ -9,10 +9,9 @@ import {
   Image,
   Alert
 } from "react-native";
-import { AsyncStorage } from "react-native";
 import axios from "axios";
 
-export default class LoginScreen extends React.Component {
+export default class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -23,20 +22,13 @@ export default class LoginScreen extends React.Component {
     name: "haha"
   };
 
-  _storeData = async username => {
-    try {
-      await AsyncStorage.setItem("username", username);
-    } catch (error) {
-      // Error saving data
-    }
-  };
   onClickListener = viewId => {
     if (viewId == "skip") this.props.navigation.navigate("App");
     else Alert.alert("Alert", "Button pressed " + viewId);
   };
   onLogin() {
     axios
-      .get("https://codenorm.herokuapp.com/login", {
+      .get("https://codenorm.herokuapp.com/", {
         params: {
           email: this.state.email,
           password: this.state.password
@@ -52,9 +44,6 @@ export default class LoginScreen extends React.Component {
       .catch(function(error) {
         console.log(error);
       });
-  }
-  register() {
-    this.props.navigation.navigate("Register");
   }
   render() {
     return (
@@ -107,7 +96,7 @@ export default class LoginScreen extends React.Component {
 
         <TouchableHighlight
           style={styles.buttonContainer}
-          onPress={() => this.register()}
+          onPress={() => this.onClickListener("register")}
         >
           <Text>Register</Text>
         </TouchableHighlight>
@@ -121,10 +110,6 @@ export default class LoginScreen extends React.Component {
       </View>
     );
   }
-
-  _signInAsync = async () => {
-    await AsyncStorage.setItem("userToken", "abc");
-  };
 }
 
 const styles = StyleSheet.create({

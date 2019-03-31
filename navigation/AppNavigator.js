@@ -8,7 +8,7 @@ import {
 import MainTabNavigator from "./MainTabNavigator";
 import LoginScreen from "../screens/LoginScreen";
 import AuthLoadingScreen from "../screens/AuthLoadingScreen";
-
+import RegisterScreen from "../screens/RegisterScreen";
 const AppStack = createStackNavigator(
   { Main: MainTabNavigator },
   { headerMode: "none" }
@@ -18,12 +18,19 @@ const AuthStack = createStackNavigator(
   { headerMode: "none" }
 );
 
+const RegisterStack = createStackNavigator(
+  {
+    Register: RegisterScreen
+  },
+  { headerMode: "none" }
+);
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
       App: AppStack,
-      Auth: AuthStack
+      Auth: AuthStack,
+      Register: RegisterStack
     },
     {
       initialRouteName: "AuthLoading"
