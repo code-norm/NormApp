@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Text,
   KeyboardAvoidingView,
-  View
+  View,
+  Button
 } from "react-native";
 import { LinearGradient } from "expo";
 
@@ -59,7 +60,7 @@ export default class NotificationScreen extends React.Component {
             {this.state.notificationBody}
           </TextInput>
         </View>
-        <View style={[style.card, { flexDirection: 'row' }]}>
+        <View style={[style.card, { flexDirection: "row" }]}>
           <Button onPress={this.notify} title="Notify" />
           <Button onPress={this.delayNotify} title="Delayed Notify" />
         </View>
@@ -89,7 +90,7 @@ export default class NotificationScreen extends React.Component {
       },
       method: "POST"
     });
-  };
+  }
 
   delayNotify = () => {
     setTimeout(() => {
@@ -106,22 +107,22 @@ const style = {
   card: {
     padding: 15,
     margin: 15,
-    shadowColor: 'rgb(0,0,0)',
+    shadowColor: "rgb(0,0,0)",
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    backgroundColor: "white",
+    borderRadius: 5
   },
   input: {
-    borderColor: '#eee',
+    borderColor: "#eee",
     borderWidth: 1,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   label: {
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 16,
-    marginBottom: 10,
-  },
+    marginBottom: 10
+  }
 };
