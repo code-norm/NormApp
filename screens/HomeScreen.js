@@ -6,7 +6,9 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  Switch,
+  Dimensions
 } from "react-native";
 import { WebBrowser } from "expo";
 
@@ -25,65 +27,78 @@ export default class HomeScreen extends React.Component {
       [
         {
           name: 'Fatigue',
-          checked: true
+          checked: true,
+          notifications: true,
         },
         {
           name: 'Vision Loss',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Slurry Speech',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Numbness in Limbs',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Pins & Needles',
-          checked: true
+          checked: true,
+          notifications: true,
         },
         {
           name: 'Cognitive Impairment',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Bladder Control Loss',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Muscle Weakness',
-          checked: false
+          checked: false,
+          notifications: false,
         },
         {
           name: 'Mood Swings',
-          checked: true
+          checked: true,
+          notifications: true,
         },
         {
           name: 'Memory Loss',
-          checked: true
+          checked: true,
+          notifications: true,
         },
         {
           name: 'Balance Impairment',
-          checked: true
+          checked: true,
+          notifications: true,
         },
         {
           name: 'Stiffness',
-          checked: false
+          checked: false,
+          notifications: false,
         }
       ],
     };
   }
 
-  toggleCheckbox(name) {
-    const changedCheckbox = this.state.selectedSymptoms.find((cb) => cb.name === name);
-
-    changedCheckbox.checked = !changedCheckbox.checked;
-
-    //const selectedSymptoms = Object.assign({}, this.state.selectedSymptoms, changedCheckbox);
-
-    this.setState({ selectedSymptoms: this.state.selectedSymptoms });
-  }
+    _handleToggle(name) {
+      let cb = this.state.selectedSymptoms.find((cb) => cb.name===name);
+      cb.checked = !cb.checked;
+      this.setState({ selectedSymptoms: this.state.selectedSymptoms });
+    }
+    _handleNotificationToggle(name) {
+      let cb = this.state.selectedSymptoms.find((cb) => cb.name===name);
+      cb.notifications = !cb.notifications;
+      this.setState({ selectedSymptoms: this.state.selectedSymptoms });
+    }
 
   render() {
     return (
@@ -107,13 +122,20 @@ export default class HomeScreen extends React.Component {
             <Button title="My Symptoms" />
           </ThemeProvider>
 
-          {this.state.selectedSymptoms.map((symptom) => {
+          {this.state.selectedSymptoms.map((symptom, index) => {
             return (
-              <CheckBox
-                key={symptom.name}
-                  title={symptom.name}
-                  checked={symptom.checked}
-                  onPress={() => this.toggleCheckbox(symptom.name)} />
+              <View key={index}>
+                <CheckBox
+                    title={symptom.name}
+                    checked={symptom.checked}
+                    onPress={() => this._handleToggle(symptom.name)} />
+
+                <Switch
+                  style={styles.switch}
+                  onValueChange={() => this._handleNotificationToggle(symptom.name)}
+                  value={symptom.notifications}
+                />
+              </View>
             )}
           )}
 
@@ -244,5 +266,11 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: "#2e78b7"
+  },
+  switch: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: '25%',
+    right: 10
   }
 });
