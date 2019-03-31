@@ -10,21 +10,39 @@ import {
   Image,
   Alert
 } from "react-native";
-
+import axios from "axios";
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
-    state = {
-      email: "",
-      password: ""
-    };
   }
+
+  state = {
+    email: "",
+    password: "",
+    name: "haha"
+  };
 
   onClickListener = viewId => {
     if (viewId == "skip") this.props.navigation.navigate("App");
     else Alert.alert("Alert", "Button pressed " + viewId);
   };
-
+  onLogin() {
+    axios
+      .get("https://codenorm.herokuapp.com/login", {
+        params: {
+          email: this.state.email,
+          password: this.state.password
+        }
+      })
+      .then(response => {
+        if (response.data.Username) {
+          this.props.navigation.navigate("App");
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -62,7 +80,7 @@ export default class LoginScreen extends React.Component {
 
         <TouchableHighlight
           style={[styles.buttonContainer, styles.loginButton]}
-          onPress={() => this.onClickListener("login")}
+          onPress={() => this.onLogin()}
         >
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>

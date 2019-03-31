@@ -1,8 +1,16 @@
 import React from "react";
-import { ScrollView, StyleSheet, TextInput, TouchableOpacity, Text, KeyboardAvoidingView, } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  KeyboardAvoidingView,
+  View
+} from "react-native";
 import { LinearGradient } from "expo";
 
-import { Permissions, Notifications } from 'expo';
+import { Permissions, Notifications } from "expo";
 
 export default class NotificationScreen extends React.Component {
   static navigationOptions = {
@@ -11,17 +19,17 @@ export default class NotificationScreen extends React.Component {
 
   state = {
     token: null,
-      notification: null,
-      title: 'Hello World',
-      body: 'Say something!'
+    notification: null,
+    title: "Hello World",
+    body: "Say something!"
   };
 
   async registerForPushNotifications() {
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
 
-    if (status !== 'granted') {
+    if (status !== "granted") {
       const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      if (status !== 'granted') {
+      if (status !== "granted") {
         return;
       }
     }
@@ -31,27 +39,31 @@ export default class NotificationScreen extends React.Component {
     this.subscription = Notifications.addListener(this.handleNotification);
 
     this.setState({
-      token,
+      token
     });
   }
   handleNotification = notification => {
     this.setState({
-      notification,
+      notification
     });
   };
 
-  sendPushNotification(token = this.state.token, title = this.state.title, body = this.state.body) {
-    return fetch('https://exp.host/--/api/v2/push/send', {
+  sendPushNotification(
+    token = this.state.token,
+    title = this.state.title,
+    body = this.state.body
+  ) {
+    return fetch("https://exp.host/--/api/v2/push/send", {
       body: JSON.stringify({
         to: token,
         title: title,
         body: body,
-        data: { message: `${title} - ${body}` },
+        data: { message: `${title} - ${body}` }
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
-      method: 'POST',
+      method: "POST"
     });
   }
 
@@ -76,10 +88,14 @@ export default class NotificationScreen extends React.Component {
           />
           <TouchableOpacity
             onPress={() => this.registerForPushNotifications()}
-            style={styles.touchable}>
+            style={styles.touchable}
+          >
             <Text>Register me for notifications!</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.sendPushNotification()} style={styles.touchable}>
+          <TouchableOpacity
+            onPress={() => this.sendPushNotification()}
+            style={styles.touchable}
+          >
             <Text>Send me a notification!</Text>
           </TouchableOpacity>
           {this.state.token ? (
@@ -95,7 +111,9 @@ export default class NotificationScreen extends React.Component {
           {this.state.notification ? (
             <View>
               <Text style={styles.text}>Last Notification:</Text>
-              <Text style={styles.text}>{JSON.stringify(this.state.notification.data.message)}</Text>
+              <Text style={styles.text}>
+                {JSON.stringify(this.state.notification.data.message)}
+              </Text>
             </View>
           ) : null}
         </KeyboardAvoidingView>
@@ -110,28 +128,28 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    padding: 8,
+    padding: 8
   },
   text: {
     paddingBottom: 2,
-    padding: 8,
+    padding: 8
   },
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 40
   },
   touchable: {
     borderWidth: 1,
     borderRadius: 4,
     margin: 8,
     padding: 8,
-    width: '95%',
+    width: "95%"
   },
   input: {
     height: 40,
     borderWidth: 1,
     margin: 8,
     padding: 8,
-    width: '95%',
+    width: "95%"
   }
 });
