@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TextInput, View, Text, Button } from 'react-native';
-import { Notifications, Permissions, Constants } from 'expo';
+import { TextInput, View, Text, Button, StyleSheet } from 'react-native';
+import { Notifications, Permissions, Constants, Expo, Pedometer, } from 'expo';
 
 Notifications.createCategoryAsync('rate', [
   {
@@ -58,7 +58,17 @@ Notifications.createCategoryAsync('reminder', [
 export default class NotificationSceen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { token: null, notificationBody: null };
+    this.state = {
+      token: null,
+      notificationBody: null,
+      isPedometerAvailable: "checking",
+      pastStepCount: 0,
+      currentStepCount: 0
+    };
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
     async registerForPushNotifications() {
@@ -81,6 +91,7 @@ export default class NotificationSceen extends React.Component {
     }
 
   componentDidMount() {
+    this._subscribe();
     Permissions.getAsync(Permissions.NOTIFICATIONS).then(obj => {
       if (obj.status !== 'granted') {
         Permissions.askAsync(Permissions.NOTIFICATIONS).then(obj => {
@@ -102,14 +113,69 @@ export default class NotificationSceen extends React.Component {
     );
   }
 
+  _subscribe = () => {
+    this._subscription = Pedometer.watchStepCount(result => {
+      this.setState({
+        currentStepCount: result.steps
+      });
+    });
+
+    Pedometer.isAvailableAsync().then(
+      result => {
+        this.setState({
+          isPedometerAvailable: String(result)
+        });
+      },
+      error => {
+        this.setState({
+          isPedometerAvailable: "Could not get isPedometerAvailable: " + error
+        });
+      }
+    );
+
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 1);
+    Pedometer.getStepCountAsync(start, end).then(
+      result => {
+        this.setState({ pastStepCount: result.steps });
+      },
+      error => {
+        this.setState({
+          pastStepCount: "Could not get stepCount: " + error
+        });
+      }
+    );
+  };
+
+  _unsubscribe = () => {
+    this._subscription && this._subscription.remove();
+    this._subscription = null;
+  };
+
+
   render() {
     return (
       <View style={{ paddingTop: 50 }}>
-        <View style={style.card}>
-          <Text style={style.label}>Device ID</Text>
-          <TextInput style={style.input}>{this.state.token}</TextInput>
+        <View style={[style.container, style.card]}>
+          <View>
+            <Text style={{fontSize: 20, alignSelf: 'center', display: 'flex'}}>
+              {this.state.pastStepCount}
+            </Text>
+            <Text style={{alignSelf: 'center'}}>
+              Steps taken in the last 24 hours
+            </Text>
+          </View>
+          <View>
+            <Text style={{fontSize: 20, alignSelf: 'center', display: 'flex'}}>
+              {this.state.currentStepCount}
+            </Text>
+            <Text style={{alignSelf: 'center'}}>
+              You walk I count - Teamwork :) Let's go!
+            </Text>
+          </View>
         </View>
-        <View style={[style.card, { flexDirection: "row" }]}>
+        <View style={[style.card, { flexDirection: "row", fontSize: 20, alignSelf: 'center', display: 'flex'}]}>
           <Button onPress={this.delayNotify} title="Notification Example" />
         </View>
         <View style={style.card}>
