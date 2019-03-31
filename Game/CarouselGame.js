@@ -10,12 +10,12 @@ import {
 } from "native-base";
 import { Button } from "react-native-elements";
 import { View, ScrollView, Image, StyleSheet, Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
-
-export default class Carousel extends Component {
+const { width } = Dimensions.get("window");
+const height = width * 0.98;
+export default class CarouselGame extends Component {
   render() {
-    const { users } = this.props;
-    if (users && users.length) {
+    const { games } = this.props;
+    if (games && games.length) {
       return (
         <View style={styles.scrollContainer}>
           <ScrollView
@@ -23,7 +23,7 @@ export default class Carousel extends Component {
             pagingEnabled
             showsHorizontalScrollIndicator={false}
           >
-            {users.map((user, i) => {
+            {games.map((game, i) => {
               return (
                 <Container key={i} style={styles.image}>
                   <Header />
@@ -36,7 +36,7 @@ export default class Carousel extends Component {
                           alignItems: "center"
                         }}
                       >
-                        <Text style={{ fontSize: 30 }}>{user.name}</Text>
+                        <Text style={{ fontSize: 30 }}>{game.name}</Text>
                       </CardItem>
                       <CardItem>
                         <Body
@@ -47,7 +47,7 @@ export default class Carousel extends Component {
                         >
                           <Image
                             style={{ width: 200, height: 200 }}
-                            source={{ uri: user.image }}
+                            source={{ uri: game.image }}
                           />
                         </Body>
                       </CardItem>
@@ -57,9 +57,7 @@ export default class Carousel extends Component {
                           alignItems: "center"
                         }}
                         footer
-                      >
-                        <Text>{user.symptom}</Text>
-                      </CardItem>
+                      />
                     </Card>
                     <View
                       style={{

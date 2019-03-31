@@ -1,6 +1,7 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import Carousel from "../People/Carousel";
+import { Button } from "native-base";
 
 export default class PeopleScreen extends React.Component {
   static navigationOptions = {
@@ -18,7 +19,7 @@ export default class PeopleScreen extends React.Component {
       {
         image:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcfhnDWnWeYOrsU0Opfv9Mo0iNTB9HK0QG67QUJYhMqLsDvfo5",
-        symptom: "Numbness",
+        symptom: "Numbness, Walk, Vision",
         name: "Joe"
       },
       {
@@ -37,7 +38,11 @@ export default class PeopleScreen extends React.Component {
   };
 
   render() {
-    return <Carousel users={this.state.users} />;
+    return (
+      <ScrollView>
+        <Carousel users={this.state.users} />
+      </ScrollView>
+    );
   }
 }
 
