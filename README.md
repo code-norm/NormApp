@@ -11,4 +11,6 @@ This is the prototype of the MS assistant app that our team built for Code Norm 
 - After that run `expo start`
 - Remember to download Expo Client App on your phone
 - When you see the below image, scan the code by your phone (IOS or Android is fine) and the app will appear on your phone
+
+<br>
   <img src="Capture.JPG">
