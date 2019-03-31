@@ -18,19 +18,12 @@ const AuthStack = createStackNavigator(
   { headerMode: "none" }
 );
 
-const RegisterStack = createStackNavigator(
-  {
-    Register: RegisterScreen
-  },
-  { headerMode: "none" }
-);
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
       App: AppStack,
-      Auth: AuthStack,
-      Register: RegisterStack
+      Auth: AuthStack
     },
     {
       initialRouteName: "AuthLoading"

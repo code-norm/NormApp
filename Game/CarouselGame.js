@@ -9,10 +9,20 @@ import {
   Body
 } from "native-base";
 import { Button } from "react-native-elements";
-import { View, ScrollView, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableHighlight
+} from "react-native";
 const { width } = Dimensions.get("window");
 const height = width * 0.98;
 export default class CarouselGame extends Component {
+  play(screen) {
+    this.props.navigation.navigate(screen);
+  }
   render() {
     const { games } = this.props;
     if (games && games.length) {
@@ -45,10 +55,14 @@ export default class CarouselGame extends Component {
                             alignItems: "center"
                           }}
                         >
-                          <Image
-                            style={{ width: 200, height: 200 }}
-                            source={{ uri: game.image }}
-                          />
+                          <TouchableHighlight
+                            onPress={() => this.play(game.screen)}
+                          >
+                            <Image
+                              style={{ width: 200, height: 200 }}
+                              source={{ uri: game.image }}
+                            />
+                          </TouchableHighlight>
                         </Body>
                       </CardItem>
                       <CardItem
@@ -67,8 +81,10 @@ export default class CarouselGame extends Component {
                         alignItems: "center"
                       }}
                     >
-                      <Button title="Messaging" />
-                      <Button title="Following" />
+                      <Button
+                        title="Play"
+                        onPress={() => this.play(game.screen)}
+                      />
                     </View>
                   </Content>
                 </Container>

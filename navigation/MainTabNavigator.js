@@ -13,6 +13,8 @@ import PeopleScreen from "../screens/PeopleScreen";
 import MessageScreen from "../screens/MessageScreen";
 import JournalScreen from "../screens/JournalScreen";
 import PersonalScreen from "../screens/PersonalScreen";
+import { create } from "uuid-js";
+import QuizGame from "../Game/QuizGame";
 
 const PeopleStack = createStackNavigator({
   People: PeopleScreen
@@ -35,7 +37,8 @@ HomeStack.navigationOptions = {
 };
 
 const GameStack = createStackNavigator({
-  Game: GameScreen
+  Game: GameScreen,
+  Quiz: QuizGame
 });
 
 GameStack.navigationOptions = {
@@ -95,6 +98,7 @@ JournalStack.navigationOptions = {
     <TabBarIcon focused={focused} name="ios-journal" />
   )
 };
+
 export default createBottomTabNavigator({
   HomeStack,
   NotificationStack,
