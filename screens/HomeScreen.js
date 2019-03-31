@@ -11,11 +11,79 @@ import {
 import { WebBrowser } from "expo";
 
 import { MonoText } from "../components/StyledText";
-import { Button, ThemeProvider } from "react-native-elements";
+import { Button, ThemeProvider, CheckBox, List, ListItem  } from "react-native-elements";
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedSymptoms:
+      [
+        {
+          name: 'Fatigue',
+          checked: true
+        },
+        {
+          name: 'Vision Loss',
+          checked: false
+        },
+        {
+          name: 'Slurry Speech',
+          checked: false
+        },
+        {
+          name: 'Numbness in Limbs',
+          checked: false
+        },
+        {
+          name: 'Pins & Needles',
+          checked: true
+        },
+        {
+          name: 'Cognitive Impairment',
+          checked: false
+        },
+        {
+          name: 'Bladder Control Loss',
+          checked: false
+        },
+        {
+          name: 'Muscle Weakness',
+          checked: false
+        },
+        {
+          name: 'Mood Swings',
+          checked: true
+        },
+        {
+          name: 'Memory Loss',
+          checked: true
+        },
+        {
+          name: 'Balance Impairment',
+          checked: true
+        },
+        {
+          name: 'Stiffness',
+          checked: false
+        }
+      ],
+    };
+  }
+
+  toggleCheckbox(name) {
+    const changedCheckbox = this.state.selectedSymptoms.find((cb) => cb.name === name);
+
+    changedCheckbox.checked = !changedCheckbox.checked;
+
+    //const selectedSymptoms = Object.assign({}, this.state.selectedSymptoms, changedCheckbox);
+
+    this.setState({ selectedSymptoms: this.state.selectedSymptoms });
+  }
 
   render() {
     return (
@@ -36,8 +104,19 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <ThemeProvider>
-            <Button title="Hey!" />
+            <Button title="My Symptoms" />
           </ThemeProvider>
+
+          {this.state.selectedSymptoms.map((symptom) => {
+            return (
+              <CheckBox
+                key={symptom.name}
+                  title={symptom.name}
+                  checked={symptom.checked}
+                  onPress={() => this.toggleCheckbox(symptom.name)} />
+            )}
+          )}
+
         </ScrollView>
       </View>
     );

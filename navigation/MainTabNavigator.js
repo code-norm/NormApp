@@ -75,8 +75,8 @@ NotificationStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  NotificationStack,
   PeopleStack,
   GameStack,
-  LinksStack,
-  NotificationStack
+  LinksStack
 });
