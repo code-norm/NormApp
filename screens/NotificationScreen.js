@@ -1,56 +1,45 @@
-import * as React from 'react';
-import { TextInput, View, Text, Button } from 'react-native';
-import { Notifications, Permissions, Constants } from 'expo';
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  KeyboardAvoidingView,
+  View
+} from "react-native";
+import { LinearGradient } from "expo";
 
-Notifications.createCategoryAsync('welcome', [
-  {
-    actionId: 'one',
-    buttonTitle: 'Button One',
-    isDestructive: true,
-    isAuthenticationRequired: false,
-  },
-  {
-    actionId: 'two',
-    buttonTitle: 'Button Two',
-    isDestructive: false,
-    isAuthenticationRequired: true,
-  },
-  {
-    actionId: 'three',
-    buttonTitle: 'Three',
-    textInput: { submitButtonTitle: 'Three', placeholder: 'Type Something' },
-    isAuthenticationRequired: false,
-  },
-])
-  .then(() => {
-    console.log(`Category 'welcome' created!`);
-  })
-  .catch(() => {
-    console.log(`Category 'welcome' not created!`);
-  });
+import { Permissions, Notifications } from "expo";
 
 export default class NotificationScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { token: null, notificationBody: null };
-  }
+  static navigationOptions = {
+    title: "Notification"
+  };
 
-  componentDidMount() {
-    Permissions.getAsync(Permissions.NOTIFICATIONS).then(obj => {
-      if (obj.status !== 'granted') {
-        Permissions.askAsync(Permissions.NOTIFICATIONS).then(obj => {
-          if (obj.status !== 'granted') {
-            return;
-          }
-          Notifications.getExpoPushTokenAsync().then(token => {
-            this.setState({ token: token });
-          });
-        });
-      } else {
-        Notifications.getExpoPushTokenAsync().then(token => {
-          this.setState({ token: token });
-        });
+  state = {
+    token: null,
+    notification: null,
+    title: "Hello World",
+    body: "Say something!"
+  };
+
+  async registerForPushNotifications() {
+    const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
+    if (status !== "granted") {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      if (status !== "granted") {
+        return;
       }
+    }
+
+    const token = await Notifications.getExpoPushTokenAsync();
+
+    this.subscription = Notifications.addListener(this.handleNotification);
+
+    this.setState({
+      token
     });
     this._notificationSubscription = Notifications.addListener(
       this.handleNotification
@@ -77,21 +66,28 @@ export default class NotificationScreen extends React.Component {
       </View>
     );
   }
+  handleNotification = notification => {
+    this.setState({
+      notification
+    });
+  };
 
-  notify = () => {
-    const { token } = this.state;
-    fetch('https://exp.host/--/api/v2/push/send', {
+  sendPushNotification(
+    token = this.state.token,
+    title = this.state.title,
+    body = this.state.body
+  ) {
+    return fetch("https://exp.host/--/api/v2/push/send", {
       body: JSON.stringify({
         to: token,
-        title: 'Test Title',
-        body: 'Test Body',
-        data: { random: Math.random() },
-        _category: `${Constants.manifest.id}:welcome`,
+        title: title,
+        body: body,
+        data: { message: `${title} - ${body}` }
       }),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
-      method: 'POST',
+      method: "POST"
     });
   };
 

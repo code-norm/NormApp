@@ -13,7 +13,13 @@ import {
 import { WebBrowser } from "expo";
 
 import { MonoText } from "../components/StyledText";
-import { Button, ThemeProvider, CheckBox, List, ListItem  } from "react-native-elements";
+import {
+  Button,
+  ThemeProvider,
+  CheckBox,
+  List,
+  ListItem
+} from "react-native-elements";
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -23,82 +29,85 @@ export default class HomeScreen extends React.Component {
     super(props);
 
     this.state = {
-      selectedSymptoms:
-      [
+      selectedSymptoms: [
         {
-          name: 'Fatigue',
+          name: "Fatigue",
           checked: true,
-          notifications: true,
+          notifications: true
         },
         {
-          name: 'Vision Loss',
+          name: "Vision Loss",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Slurry Speech',
+          name: "Slurry Speech",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Numbness in Limbs',
+          name: "Numbness in Limbs",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Pins & Needles',
+          name: "Pins & Needles",
           checked: true,
-          notifications: true,
+          notifications: true
         },
         {
-          name: 'Cognitive Impairment',
+          name: "Cognitive Impairment",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Bladder Control Loss',
+          name: "Bladder Control Loss",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Muscle Weakness',
+          name: "Muscle Weakness",
           checked: false,
-          notifications: false,
+          notifications: false
         },
         {
-          name: 'Mood Swings',
+          name: "Mood Swings",
           checked: true,
-          notifications: true,
+          notifications: true
         },
         {
-          name: 'Memory Loss',
+          name: "Memory Loss",
           checked: true,
-          notifications: true,
+          notifications: true
         },
         {
-          name: 'Balance Impairment',
+          name: "Balance Impairment",
           checked: true,
-          notifications: true,
+          notifications: true
         },
         {
-          name: 'Stiffness',
+          name: "Stiffness",
           checked: false,
-          notifications: false,
+          notifications: false
         }
-      ],
+      ]
     };
   }
 
-    _handleToggle(name) {
-      let symptom = this.state.selectedSymptoms.find((symptom) => symptom.name===name);
-      symptom.checked = !symptom.checked;
-      this.setState({ selectedSymptoms: this.state.selectedSymptoms });
-    }
-    _handleNotificationToggle(name) {
-      let symptom = this.state.selectedSymptoms.find((symptom) => symptom.name===name);
-      symptom.notifications = !symptom.notifications;
-      this.setState({ selectedSymptoms: this.state.selectedSymptoms });
-    }
+  _handleToggle(name) {
+    let symptom = this.state.selectedSymptoms.find(
+      symptom => symptom.name === name
+    );
+    symptom.checked = !symptom.checked;
+    this.setState({ selectedSymptoms: this.state.selectedSymptoms });
+  }
+  _handleNotificationToggle(name) {
+    let symptom = this.state.selectedSymptoms.find(
+      symptom => symptom.name === name
+    );
+    symptom.notifications = !symptom.notifications;
+    this.setState({ selectedSymptoms: this.state.selectedSymptoms });
+  }
 
   render() {
     return (
@@ -120,9 +129,9 @@ export default class HomeScreen extends React.Component {
 
           <ThemeProvider>
             <View>
-                <Button buttonStyle={styles.left} title="My Symptoms" />
-                <Button buttonStyle={styles.right} title="Notifications" />
-                    <Button title=" " />
+              <Button buttonStyle={styles.left} title="My Symptoms" />
+              <Button buttonStyle={styles.right} title="Notifications" />
+              <Button title=" " />
             </View>
           </ThemeProvider>
 
@@ -130,19 +139,21 @@ export default class HomeScreen extends React.Component {
             return (
               <View key={index}>
                 <CheckBox
-                    title={symptom.name}
-                    checked={symptom.checked}
-                    onPress={() => this._handleToggle(symptom.name)} />
+                  title={symptom.name}
+                  checked={symptom.checked}
+                  onPress={() => this._handleToggle(symptom.name)}
+                />
 
                 <Switch
                   style={[styles.switch, styles.right]}
-                  onValueChange={() => this._handleNotificationToggle(symptom.name)}
+                  onValueChange={() =>
+                    this._handleNotificationToggle(symptom.name)
+                  }
                   value={symptom.notifications}
                 />
               </View>
-            )}
-          )}
-
+            );
+          })}
         </ScrollView>
       </View>
     );
@@ -237,24 +248,24 @@ const styles = StyleSheet.create({
     color: "#2e78b7"
   },
   switch: {
-    position: 'absolute',
-    bottom: '25%'
+    position: "absolute",
+    bottom: "25%"
   },
   head: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent:'space-between',
-    alignItems:'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   left: {
-    zIndex: 2,
-    position: 'absolute',
+    zIndex: 5,
+    position: "absolute",
     left: 15
   },
   right: {
-    zIndex: 2,
-    alignSelf: 'flex-end',
-    position: 'absolute',
+    zIndex: 5,
+    alignSelf: "flex-end",
+    position: "absolute",
     right: 15
-  },
+  }
 });
