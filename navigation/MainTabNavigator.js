@@ -11,7 +11,7 @@ import NotificationScreen from "../screens/NotificationScreen";
 import GameScreen from "../screens/GameScreen";
 import PeopleScreen from "../screens/PeopleScreen";
 import MessageScreen from "../screens/MessageScreen";
-
+import JournalScreen from "../screens/JournalScreen";
 const PeopleStack = createStackNavigator({
   People: PeopleScreen
 });
@@ -73,10 +73,21 @@ NotificationStack.navigationOptions = {
   )
 };
 
+const JournalStack = createStackNavigator({
+  Journal: JournalScreen
+});
+
+JournalStack.navigationOptions = {
+  tabBarLabel: "Journal",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name="ios-journal" />
+  )
+};
 export default createBottomTabNavigator({
   HomeStack,
   NotificationStack,
   PeopleStack,
   GameStack,
-  LinksStack
+  LinksStack,
+  JournalStack
 });

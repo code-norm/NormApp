@@ -33,7 +33,7 @@ export default class MessageScreen extends React.Component {
           text: text
         })
         .then(messageId => {
-          if (this.state.messages.length > 5) {
+          if (this.state.messages.length > 4) {
             this.state.messages.shift();
           }
           this.setState({ text: "", message: this.state.messages });
@@ -57,7 +57,7 @@ export default class MessageScreen extends React.Component {
         <View style={styles.container}>
           <OldMessages
             messages={
-              this.state.messages.length <= 5 ? this.state.messages : []
+              this.state.messages.length <= 4 ? this.state.messages : []
             }
           />
           <Text>{this.state.typingUser}</Text>
@@ -123,7 +123,7 @@ export default class MessageScreen extends React.Component {
               console.log(`User ${user.name} is ${state.current}`);
             }
           },
-          messageLimit: 5
+          messageLimit: 4
         });
       })
       .catch(err => {
