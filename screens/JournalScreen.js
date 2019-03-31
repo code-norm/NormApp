@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import Post from "../Journal/Post";
+import Post from "../journal/Post";
 export default class JournalScreen extends React.Component {
   static navigationOptions = {
     title: "Journal"
@@ -19,7 +19,6 @@ export default class JournalScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
     backgroundColor: "#fff"
   }
 });

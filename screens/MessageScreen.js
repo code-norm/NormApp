@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Input, Button, CheckBox } from "react-native-elements";
 import Chatkit from "@pusher/chatkit-client";
 
-import OldMessages from "../Chat/OldMessages";
+import OldMessages from "../chat/OldMessages";
 export default class MessageScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return { title: `${navigation.state.params.name}` };

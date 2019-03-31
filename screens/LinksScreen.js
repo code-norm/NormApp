@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 import ChatNavigation from "../navigation/ChatNavigation";
-import MessengerList from "../Chat/MessengerList";
+import MessengerList from "../chat/MessengerList";
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
     title: "Chat"

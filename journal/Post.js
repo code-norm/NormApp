@@ -40,17 +40,17 @@ export default class Post extends React.Component {
 
     return (
       <View>
-        <View style={styles.inputContainer}>
-          <Text style={{ fontSize: 20, marginBottom: 20 }}>
+        <View style={styles.card}>
+          <Text style={styles.label}>
             {new Date().toLocaleString()}
           </Text>
 
           <TextInput
-            style={styles.inputs}
+            style={styles.input}
             multiline={true}
             editable={true}
-            maxLength={500}
-            placeholder="How was your day ?"
+            maxLength={5000}
+            placeholder="Anything different or special today?"
             onChangeText={value => {
               this.setState({ content: value });
             }}
@@ -59,43 +59,21 @@ export default class Post extends React.Component {
         </View>
         <ScrollView>
           <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
+            style={[styles.container, { flexDirection: "row" }]} >
             <TouchableOpacity
               title="Submit"
               onPress={() => {
                 this.onSubmit();
-              }}
-            >
-              <Icon
-                reverse
-                name="ios-cloud-upload"
-                type="ionicon"
-                color="#517fa4"
-              />
+              }} >
+              <Icon reverse name="ios-cloud-upload" type="ionicon" color="#517fa4" />
             </TouchableOpacity>
-            <TouchableOpacity
-              title="Camera roll"
-              onPress={() => {
+            <TouchableOpacity title="Camera roll" onPress={() => {
                 if (this.state.hasCameraPermission) this._pickImage();
-              }}
-            >
+              }}>
               <Icon reverse name="ios-images" type="ionicon" color="#517fa4" />
             </TouchableOpacity>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
+          <View style={styles.container}>
             {image && (
               <Image
                 source={{ uri: image }}
@@ -103,14 +81,7 @@ export default class Post extends React.Component {
               />
             )}
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
+          <View style={styles.container} >
             {this.state.journals.map((j, i) => {
               return (
                 <OldPost
@@ -153,16 +124,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFF"
   },
-  inputContainer: {
-    flexDirection: "column",
-    alignItems: "center"
+  card: {
+    padding: 15,
+    borderRadius: 5,
   },
-  inputs: {
-    width: "80%",
-    height: 200,
-    flex: 1,
-    borderColor: "black",
-    borderWidth: 1,
-    fontSize: 30
-  }
+  input: {
+    fontSize: 25,
+    borderColor: '#eee',
+    borderWidth: 2,
+    padding: 10,
+    borderRadius: 5,
+    width:'95%',
+    alignSelf: "center",
+
+  },
+  label: {
+    fontWeight: '600',
+    fontSize: 25,
+    marginBottom: 15,
+    alignSelf: 'center'
+  },
 });

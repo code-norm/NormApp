@@ -1,0 +1,82 @@
+import React, { Component } from "react";
+import { Modal, Text, TouchableHighlight, View, Alert, Image, StyleSheet } from "react-native";
+import { Input, Icon, Button } from "react-native-elements";
+
+export default class OldPost extends Component {
+  constructor(props) {
+    super(props);
+  }
+  state = {
+    modalVisible: false
+  };
+
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
+  render() {
+    return (
+      <View style={styles.entry}>
+        <Modal animationType="slide" transparent={false} visible={this.state.modalVisible}>
+          <View style={{ flex:1, flexDirection:'column',  justifyContent:'space-between', marginTop: 40 }, styles.align}>
+                <Text style={{ fontSize: 30, marginTop: 20 }}>
+                  {this.props.content}
+                </Text>
+                {
+                  this.props.image ? (
+                    <Image
+                      source={{ uri: this.props.image }}
+                      style={{ width: 300, height: 300 }}
+                    />) : (<Text />)
+                }
+                <Button title="Close"
+                  buttonStyle={styles.align}
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }} />
+          </View>
+        </Modal>
+
+        <TouchableHighlight
+          underlayColor='#EEE'
+          style={styles.button}
+          onPress={() => {
+            this.setModalVisible(true);
+          }}
+        >
+          <Text style={styles.font}>{this.props.date}</Text>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF"
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 5
+  },
+  entry: {
+    borderColor: '#eee',
+    borderWidth: 1,
+    marginTop: 10,
+    borderRadius: 5,
+    fontSize: 25,
+    width: '90%'
+  },
+  font: {
+    fontSize: 25
+  },
+  align: {
+    alignSelf: 'center',
+    width:'95%',
+  }
+});
